@@ -43,6 +43,7 @@
 #include <soc/qcom/scm.h>
 #include <linux/platform_device.h>
 #include <linux/wakelock.h>
+#include <linux/display_state.h>
 
 #ifdef CONFIG_MSM_HOTPLUG
 #include <linux/msm_hotplug.h>
@@ -274,6 +275,11 @@ static irqreturn_t fpc1020_irq_handler(int irq, void *handle)
 	}
 
 	sysfs_notify(&fpc1020->dev->kobj, NULL, dev_attr_irq.attr.name);
+
+//	if (!is_display_on()) {
+		sched_set_boost(1);
+		sched_set_boost(0);
+//	}
 
 	return IRQ_HANDLED;
 }
